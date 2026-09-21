@@ -1,0 +1,16 @@
+version: 2
+
+sources:
+  - name: bronze
+    schema: bronze
+    tables:
+      - name: raw_works
+        description: Latest Crossref payload for each stable source record key.
+        columns:
+          - name: source_record_key
+            data_tests:
+              - not_null
+              - unique
+          - name: raw_payload
+            data_tests:
+              - not_null

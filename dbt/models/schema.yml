@@ -1,0 +1,64 @@
+version: 2
+
+models:
+  - name: silver_works
+    description: One clean, analysis-ready row per valid Crossref work.
+    columns:
+      - name: source_record_key
+        data_tests: [not_null, unique]
+      - name: doi
+        data_tests: [not_null, unique]
+      - name: title
+        data_tests: [not_null]
+      - name: published_date
+        data_tests: [not_null]
+
+  - name: silver_authors
+    description: Authors exploded from the nested Crossref JSON array.
+    columns:
+      - name: author_record_id
+        data_tests: [not_null, unique]
+      - name: source_record_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('silver_works')
+                field: source_record_key
+
+  - name: silver_venues
+    columns:
+      - name: venue_id
+        data_tests: [not_null, unique]
+
+  - name: quarantine_works
+    description: Invalid records kept for diagnosis instead of silently dropped.
+    columns:
+      - name: source_record_key
+        data_tests: [not_null, unique]
+      - name: quarantine_reason
+        data_tests: [not_null]
+
+  - name: gold_papers_by_month
+    columns:
+      - name: publication_month
+        data_tests: [not_null, unique]
+      - name: paper_count
+        data_tests: [not_null]
+
+  - name: gold_top_publishers
+    columns:
+      - name: publisher
+        data_tests: [not_null, unique]
+
+  - name: gold_citation_metrics
+    columns:
+      - name: paper_count
+        data_tests: [not_null]
+
+  - name: gold_topic_trends
+    columns:
+      - name: publication_month
+        data_tests: [not_null]
+      - name: topic
+        data_tests: [not_null]

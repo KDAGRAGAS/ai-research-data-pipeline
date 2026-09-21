@@ -1,0 +1,26 @@
+name: ai_research_trends
+version: "1.0.0"
+config-version: 2
+
+profile: ai_research_trends
+model-paths: ["models"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+clean-targets: ["target", "dbt_packages"]
+
+models:
+  ai_research_trends:
+    silver:
+      +schema: silver
+      +materialized: table
+    quarantine:
+      +schema: quarantine
+      +materialized: table
+    gold:
+      +schema: gold
+      +materialized: table
+
+seeds:
+  ai_research_trends:
+    +schema: reference
+    +quote_columns: false
